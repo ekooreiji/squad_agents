@@ -1,0 +1,10 @@
+name: squad-text-revisor
+version: 1.0.0
+
+agents:
+
+skills:
+
+
+plugins:
+  - path: .agents/plugins/logging.md
