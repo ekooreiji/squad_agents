@@ -1,0 +1,17 @@
+name: squad_Developer
+version: 1.0.0
+
+agents:
+  path: .claude/agents/po_agent.md
+skills:
+  path: .claude/skills/acceptance_criteria_generator.md
+  path: .claude/skills/acceptance_bdd_scenarios.md
+  path: .claude/skills/requirements_analizer.md
+  path: .claude/skills/stakeholder-impact-analyzer.md
+  path: .claude/skills/template-library.md
+  path: .claude/skills/user-journey-mapper.md
+  path: .claude/skills/user-story-writer.md
+
+
+plugins:
+  - path: .agents/plugins/logging.md
