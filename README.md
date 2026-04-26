@@ -186,6 +186,91 @@ react/
 
 ---
 
+## Como Usar com APM (Agent Package Manager)
+
+### Instalação do APM
+
+```cmd
+:: Windows (Scoop)
+scoop bucket add apm https://github.com/microsoft/scoop-apm
+scoop install apm
+
+:: Ou via pip
+pip install apm-cli
+```
+
+### Exemplos de apm.yml
+
+Copie um dos exemplos abaixo para o arquivo `apm.yml` do seu projeto e execute `apm install`.
+
+#### Projeto Web (React + TypeScript)
+
+```yaml
+name: web-project
+version: 1.0.0
+
+agents:
+  path: ekooreiji/squad_agents/agents/developer_agent.md
+
+skills:
+  path: ekooreiji/squad_agents/skills/react/SKILL.md
+  path: ekooreiji/squad_agents/skills/typescript/SKILL.md
+  path: ekooreiji/squad_agents/skills/tailwind-css/SKILL.md
+```
+
+#### Projeto Backend (FastAPI + PostgreSQL)
+
+```yaml
+name: api-project
+version: 1.0.0
+
+agents:
+  path: ekooreiji/squad_agents/agents/developer_agent.md
+  path: ekooreiji/squad_agents/agents/architect_agent.md
+
+skills:
+  path: ekooreiji/squad_agents/skills/fastapi/SKILL.md
+  path: ekooreiji/squad_agents/skills/postgresql/SKILL.md
+  path: ekooreija/squad_agents/skills/docker/SKILL.md
+```
+
+#### Projeto Mobile (React Native)
+
+```yaml
+name: mobile-project
+version: 1.0.0
+
+agents:
+  path: ekooreiji/squad_agents/agents/agente-mobile-frontend/agent.md
+  path: ekooreiji/squad_agents/agents/agente-mobile-backend/agent.md
+
+skills:
+  path: ekooreiji/squad_agents/skills/react-native/SKILL.md
+  path: ekooreiji/squad_agents/skills/typescript/SKILL.md
+```
+
+#### Projeto Fullstack (Next.js + FastAPI)
+
+```yaml
+name: fullstack-project
+version: 1.0.0
+
+agents:
+  path: ekooreiji/squad_agents/agents/developer_agent.md
+  path: ekooreiji/squad_agents/agents/architect_agent.md
+  path: ekooreiji/squad_agents/agents/po_agent.md
+
+skills:
+  path: ekooreiji/squad_agents/skills/nextjs/SKILL.md
+  path: ekooreiji/squad_agents/skills/fastapi/SKILL.md
+  path: ekooreiji/squad_agents/skills/postgresql/SKILL.md
+  path: ekooreiji/squad_agents/skills/docker/SKILL.md
+  path: ekooreiji/squad_agents/skills/typescript/SKILL.md
+  path: ekooreiji/squad_agents/skills/testing-strategies/SKILL.md
+```
+
+---
+
 ## Criar Novo Agente
 
 Para criar um novo agente, siga a estrutura:
