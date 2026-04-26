@@ -1,0 +1,33 @@
+flowchart TD
+    START([Inicio]) --> LOAD_FORM[Exibir Formulario de Cadastro]
+
+    LOAD_FORM --> SUBMIT{Usuario Submete Form}
+    SUBMIT -->|Nao| END([Fim])
+
+    SUBMIT -->|Sim| VALIDATE[Validar Campos]
+
+    VALIDATE --> CHECK_EMAIL{Email Valido?}
+    CHECK_EMAIL -->|Nao| EMAIL_ERR([Erro: Email Invalido])
+
+    CHECK_EMAIL -->|Sim| UNIQUE{Check Email Unico}
+    UNIQUE -->|Nao| EMAIL_TAKEN([Erro: Email Ja Cadastrado])
+
+    UNIQUE -->|Sim| CHECK_PASS{Password Seguro?}
+    CHECK_PASS -->|Nao| PASS_ERR([Erro: Senha Fraca])
+
+    CHECK_PASS -->|Sim| CHECK_CPF{CPF Valido?}
+    CHECK_CPF -->|Nao| CPF_ERR([Erro: CPF Invalido])
+
+    CHECK_CPF -->|Sim| SAVE[Salvar Usuario no Banco]
+    SAVE --> EMAIL_SENT[Enviar Email de Confirmacao]
+    EMAIL_SENT --> SUCCESS([Cadastro Realizado com Sucesso])
+
+    EMAIL_ERR --> LOAD_FORM
+    EMAIL_TAKEN --> LOAD_FORM
+    PASS_ERR --> LOAD_FORM
+    CPF_ERR --> LOAD_FORM
+
+    style START fill:#e3f2fd,stroke:#1976d2
+    style VALIDATE fill:#fff3e0,stroke:#f57c00
+    style SUCCESS fill:#e8f5e9,stroke:#388e3c
+    style ERROR fill:#ffebee,stroke:#d32f2f

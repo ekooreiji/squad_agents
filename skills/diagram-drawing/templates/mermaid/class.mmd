@@ -1,0 +1,123 @@
+classDiagram
+    direction TB
+
+    %% Classes de Entidade
+    class User {
+        +UUID id
+        +String name
+        +String email
+        +Enum Role role
+        +DateTime created_at
+        +DateTime updated_at
+        +create() User
+        +update() void
+        +delete() void
+        +toJSON() Object
+    }
+
+    class Order {
+        +UUID id
+        +UUID user_id
+        +Decimal total
+        +Enum Status status
+        +DateTime created_at
+        +create() Order
+        +addItem() void
+        +calculateTotal() Decimal
+    }
+
+    class OrderItem {
+        +UUID id
+        +UUID order_id
+        +UUID product_id
+        +Integer quantity
+        +Decimal price
+        +create() OrderItem
+    }
+
+    class Product {
+        +UUID id
+        +String name
+        +String description
+        +Decimal price
+        +Integer stock
+        +DateTime created_at
+        +updateStock() void
+    }
+
+    %% Repositories
+    class UserRepository {
+        +findAll() User[]
+        +findById(id) User
+        +findByEmail(email) User
+        +save(User) User
+    }
+
+    class OrderRepository {
+        +findAll() Order[]
+        +findByUserId(userId) Order[]
+        +findById(id) Order
+        +save(Order) Order
+    }
+
+    class ProductRepository {
+        +findAll() Product[]
+        +findById(id) Product
+        +findInStock() Product[]
+        +save(Product) Product
+    }
+
+    %% Services
+    class UserService {
+        +createUser(dto) User
+        +updateUser(id, dto) User
+        +deleteUser(id) void
+    }
+
+    class OrderService {
+        +createOrder(userId, items) Order
+        +cancelOrder(id) void
+        +getOrderHistory(userId) Order[]
+    }
+
+    class PaymentService {
+        +processPayment(order) PaymentResult
+        +refundPayment(order) RefundResult
+    }
+
+    %% Relationships
+    User "1" o-- "0..*" Order : has
+    Order "1" o-- "1..*" OrderItem : contains
+    Product "1" o-- "0..*" OrderItem : included in
+
+    User --> UserRepository
+    Order --> OrderRepository
+    Product --> ProductRepository
+
+    UserService --> User
+    OrderService --> Order
+    PaymentService --> Order
+
+    class ProductRepository {
+        +findAll() Product[]
+        +findById(id) Product
+        +findInStock() Product[]
+        +save(Product) Product
+    }
+
+    %% Enums
+    class Role {
+        <<enumeration>>
+        ADMIN
+        USER
+        GUEST
+    }
+
+    class Status {
+        <<enumeration>>
+        PENDING
+        CONFIRMED
+        SHIPPED
+        DELIVERED
+        CANCELLED
+    }

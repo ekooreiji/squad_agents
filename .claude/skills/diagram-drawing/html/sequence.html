@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama de Sequencia</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="mermaid">
+sequenceDiagram
+    participant C as Cliente
+    participant A as API
+    participant D as Database
+    participant R as Redis
+
+    C->>A: POST /users
+    activate A
+    A->>D: INSERT user
+    activate D
+    D-->>A: user_id
+    deactivate D
+    A->>R: Cache user
+    activate R
+    R-->>A: OK
+    deactivate R
+    A-->>C: 201 Created
+    deactivate A
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            sequenceDiagram: {
+                actorMargin: 50,
+                boxMargin: 10,
+                boxTextMargin: 5,
+                noteMargin: 10,
+                messageMargin: 35
+            },
+            securityLevel: 'loose'
+        });
+    </script>
+</body>
+</html>

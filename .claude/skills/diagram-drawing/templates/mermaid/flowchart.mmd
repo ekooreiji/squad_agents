@@ -1,0 +1,53 @@
+flowchart TD
+    %% Nós de início/fim (elipse)
+    A([Inicio do Processo])
+
+    %% Nós de decisão (diamante)
+    B{Validação de Entrada}
+    C{Usuario Autenticado?}
+    D{Tem Permissão?}
+
+    %% Processos (retângulo)
+    E[Buscar Dados do Usuario]
+    F[Processar Solicitação]
+    G[Salvar no Banco de Dados]
+    H[Enviar Notificação]
+    I[Log de Auditoria]
+
+    %% Subprocessos (retângulo com bordas duplas)
+    J[[Validação de Campos]]
+
+    %% Nós de saída (elipse)
+    K([Fim do Processo])
+    L([Erro: Acesso Negado])
+    M([Erro: Dados Inválidos])
+
+    %% Conexões
+    A --> J
+    J --> B
+    B -->|Valido| C
+    B -->|Invalido| M
+    M --> K
+    C -->|Sim| E
+    C -->|Nao| D
+    D -->|Sim| F
+    D -->|Nao| L
+    L --> K
+    E --> F
+    F --> G
+    G --> I
+    I --> H
+    H --> K
+
+    %% Estilos
+    classDef startEnd fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef decision fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
+    classDef process fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
+    classDef subprocess fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+
+    class A,K startEnd
+    class B,C,D decision
+    class E,F,G,H,I process
+    class L,M error
+    class J subprocess

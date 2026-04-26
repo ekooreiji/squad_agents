@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant C as Cliente
+    participant G as API Gateway
+    participant A as API
+    participant S as Service
+    participant R as Repository
+    participant D as Database
+    participant CACHE as Redis
+
+    C->>G: POST /api/users
+    G->>A: createUser(dto)
+    A->>S: createUser(dto)
+    S->>R: findByEmail(dto.email)
+    alt user exists
+        R-->>S: null
+        S-->>A: Error: Email exists
+        A-->>G: 409 Conflict
+        G-->>C: 409 Conflict
+    else user not exists
+        R-->>S: null
+        S->>D: INSERT user
+        D-->>S: user_id
+        S->>CACHE: Set cache
+        CACHE-->>S: OK
+        S-->>A: user
+        A-->>G: 201 Created
+        G-->>C: user
+    end

@@ -1,0 +1,47 @@
+graph TB
+    subgraph "Docker Network: frontend"
+        NGINX([Nginx])
+    end
+
+    subgraph "Docker Network: backend"
+        FLASK([Flask API])
+        FASTAPI([FastAPI])
+        WORKER([Background Worker])
+    end
+
+    subgraph "Docker Network: data"
+        POSTGRES[(PostgreSQL)]
+        REDIS[(Redis)]
+        QUEUE{{(Redis Queue)}}
+    end
+
+    subgraph "Docker Volumes"
+        PG_DATA([pg_data])
+        REDIS_DATA([redis_data])
+    end
+
+    subgraph "External"
+        CDN([CDN])
+        SMTP([SMTP Server])
+    end
+
+    Client([Client]) --> NGINX
+    NGINX --> FLASK
+    NGINX --> FASTAPI
+    FLASK --> POSTGRES
+    FLASK --> REDIS
+    FASTAPI --> POSTGRES
+    FASTAPI --> REDIS
+    FASTAPI --> QUEUE
+    WORKER --> QUEUE
+    WORKER --> POSTGRES
+    WORKER --> SMTP
+    POSTGRES -.-> PG_DATA
+    REDIS -.-> REDIS_DATA
+
+    Client --> CDN
+    CDN --> NGINX
+
+    style frontend fill:#e3f2fd,stroke:#1976d2
+    style backend fill:#e8f5e9,stroke:#388e3c
+    style data fill:#f3e5f5,stroke:#7b1fa2

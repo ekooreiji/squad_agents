@@ -1,0 +1,58 @@
+graph TB
+    subgraph Presentation
+        API([API Gateway])
+        UI([Admin Panel])
+        DOC([Swagger UI])
+    end
+
+    subgraph Application
+        SVC([Services])
+        DTO([DTOs])
+        MAP([Mappers])
+    end
+
+    subgraph Domain
+        ENT([Entities])
+        REP([Repositories])
+        EVT([Events])
+        SPEC([Specifications])
+    end
+
+    subgraph Infrastructure
+        DB[(PostgreSQL)]
+        REDIS[(Redis)]
+        QUEUE([Message Queue])
+        EXT([External APIs])
+    end
+
+    subgraph Clients
+        WEB([Web Client])
+        MOBILE([Mobile App])
+        THIRD([Third Party])
+    end
+
+    API --> SVC
+    UI --> SVC
+    DOC --> API
+
+    SVC --> DTO
+    SVC --> MAP
+    SVC --> ENT
+    SVC --> REP
+    SVC --> EVT
+
+    ENT --> REP
+    REP --> DB
+    REP --> REDIS
+    EVT --> QUEUE
+
+    MAP --> ENT
+
+    WEB --> API
+    MOBILE --> API
+    THIRD --> API
+
+    style Presentation fill:#e3f2fd,stroke:#1976d2
+    style Application fill:#e8f5e9,stroke:#388e3c
+    style Domain fill:#fff3e0,stroke:#f57c00
+    style Infrastructure fill:#f3e5f5,stroke:#7b1fa2

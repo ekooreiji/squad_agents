@@ -1,0 +1,64 @@
+classDiagram
+    direction TB
+
+    class User {
+        +UUID id
+        +String name
+        +String email
+        +String passwordHash
+        +Enum Role role
+        +DateTime createdAt
+        +DateTime updatedAt
+        +create() User
+        +update(data) void
+        +delete() void
+        +toJSON() Object
+    }
+
+    class Order {
+        +UUID id
+        +UUID userId
+        +Decimal total
+        +Enum Status status
+        +Enum PaymentStatus paymentStatus
+        +DateTime createdAt
+        +createOrder(userId) Order
+        +addItem(productId, qty) void
+        +calculateTotal() Decimal
+        +cancel() void
+        +confirm() void
+    }
+
+    class OrderItem {
+        +UUID id
+        +UUID orderId
+        +UUID productId
+        +Integer quantity
+        +Decimal unitPrice
+        +Decimal subtotal
+        +create() OrderItem
+    }
+
+    class Product {
+        +UUID id
+        +String name
+        +String description
+        +Decimal price
+        +Integer stock
+        +Boolean active
+        +DateTime createdAt
+        +updateStock(qty) void
+        +isAvailable() Boolean
+    }
+
+    class Category {
+        +UUID id
+        +String name
+        +UUID parentId
+        +create() Category
+    }
+
+    User "1" o-- "0..*" Order : places
+    Order "1" o-- "1..*" OrderItem : contains
+    Product "1" o-- "0..*" OrderItem : sold in
+    Category "1" o-- "0..*" Product : categorizes

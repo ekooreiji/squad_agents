@@ -1,0 +1,64 @@
+classDiagram
+    class UserService {
+        +UserRepository userRepo
+        +Logger logger
+        +createUser(dto) User
+        +updateUser(id, dto) User
+        +deleteUser(id) void
+        +getUser(id) User
+    }
+
+    class UserRepository {
+        +Database db
+        +findAll() User[]
+        +findById(id) User
+        +findByEmail(email) User
+        +save(user) User
+        +delete(id) void
+    }
+
+    class OrderService {
+        +OrderRepository orderRepo
+        +ProductRepository productRepo
+        +createOrder(userId, items) Order
+        +cancelOrder(id) void
+        +getOrderHistory(userId) Order[]
+    }
+
+    class OrderRepository {
+        +Database db
+        +findAll() Order[]
+        +findByUserId(userId) Order[]
+        +findById(id) Order
+        +save(order) Order
+        +update(order) void
+    }
+
+    class PaymentService {
+        +PaymentGateway gateway
+        +processPayment(order) PaymentResult
+        +refundPayment(orderId) RefundResult
+    }
+
+    class ProductService {
+        +ProductRepository productRepo
+        +createProduct(dto) Product
+        +updateStock(id, qty) void
+        +getProducts() Product[]
+    }
+
+    class ProductRepository {
+        +Database db
+        +Cache cache
+        +findAll() Product[]
+        +findById(id) Product
+        +findInStock() Product[]
+        +save(product) Product
+        +updateStock(id, qty) void
+    }
+
+    UserService --> UserRepository
+    OrderService --> OrderRepository
+    OrderService --> ProductRepository
+    OrderService --> PaymentService
+    ProductService --> ProductRepository

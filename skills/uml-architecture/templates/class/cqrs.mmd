@@ -1,0 +1,64 @@
+classDiagram
+    class Command {
+        <<abstract>>
+        +UUID id
+        +DateTime timestamp
+        +execute() Result
+    }
+
+    class Query {
+        <<abstract>>
+        +UUID id
+        +execute() Result
+    }
+
+    class CreateUserCommand {
+        +String name
+        +String email
+        +String password
+        +execute() User
+    }
+
+    class UpdateUserCommand {
+        +UUID userId
+        +String name
+        +execute() User
+    }
+
+    class DeleteUserCommand {
+        +UUID userId
+        +execute() void
+    }
+
+    class GetUserQuery {
+        +UUID userId
+        +execute() User
+    }
+
+    class ListUsersQuery {
+        +Integer page
+        +Integer limit
+        +execute() UserList
+    }
+
+    class UserCommandHandler {
+        +UserRepository repo
+        +handle(cmd) Result
+    }
+
+    class UserQueryHandler {
+        +UserRepository repo
+        +Cache cache
+        +handle(query) Result
+    }
+
+    Command <|-- CreateUserCommand
+    Command <|-- UpdateUserCommand
+    Command <|-- DeleteUserCommand
+    Query <|-- GetUserQuery
+    Query <|-- ListUsersQuery
+    UserCommandHandler --> CreateUserCommand
+    UserCommandHandler --> UpdateUserCommand
+    UserCommandHandler --> DeleteUserCommand
+    UserQueryHandler --> GetUserQuery
+    UserQueryHandler --> ListUsersQuery

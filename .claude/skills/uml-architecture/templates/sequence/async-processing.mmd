@@ -1,0 +1,35 @@
+sequenceDiagram
+    participant C as Cliente
+    participant A as API
+    participant O as Order Service
+    participant P as Payment Gateway
+    participant Q as Queue
+    participant W as Worker
+    participant E as Email Service
+
+    C->>A: POST /orders
+    A->>O: createOrder(userId, items)
+    O->>O: validateItems(items)
+    O->>O: calculateTotal()
+    O->>P: processPayment(total)
+    activate P
+    P-->>O: payment_id
+    deactivate P
+    O->>Q: Publish order.created
+    Q-->>O: published
+    O-->>A: order
+    A-->>C: 201 Created
+
+    Note over W: Async Processing
+    W->>Q: Consume order.created
+    Q-->>W: order
+    W->>W: reserveStock(items)
+    W->>W: sendConfirmationEmail()
+    W->>W: logOrder()
+    W->>Q: Acknowledge
+    Q-->>W: acknowledged
+
+    C->>A: GET /orders/{id}
+    A->>O: getOrder(id)
+    O-->>A: order
+    A-->>C: order

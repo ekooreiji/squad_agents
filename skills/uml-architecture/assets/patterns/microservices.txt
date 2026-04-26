@@ -1,0 +1,296 @@
+# Microservices Architecture Pattern
+
+## Overview
+
+Microservices architecture structures an application as a collection of loosely coupled services, each implementing a specific business capability.
+
+## Core Principles
+
+1. **Single Responsibility:** Each service does one thing well
+2. **Loose Coupling:** Services communicate via well-defined APIs
+3. **Independent Deployment:** Services can be deployed independently
+4. **Decentralized Data:** Each service manages its own database
+
+## Service Types
+
+### 1. API Gateway
+
+Entry point for all clients.
+
+```yaml
+services:
+  api-gateway:
+    image: kong/kong:latest
+    ports:
+      - "80:8000"
+    depends_on:
+      - auth-service
+      - user-service
+      - order-service
+```
+
+### 2. Core Services
+
+Business logic implementations.
+
+```yaml
+services:
+  auth-service:
+    build: ./services/auth
+    ports:
+      - "8001:8000"
+    environment:
+      - DATABASE_URL=postgresql://auth_db
+      - REDIS_URL=redis://redis:6379
+
+  user-service:
+    build: ./services/users
+    ports:
+      - "8002:8000"
+    environment:
+      - DATABASE_URL=postgresql://user_db
+
+  order-service:
+    build: ./services/orders
+    ports:
+      - "8003:8000"
+    environment:
+      - DATABASE_URL=postgresql://order_db
+      - KAFKA_BROKERS=kafka:9092
+```
+
+### 3. Supporting Services
+
+Infrastructure concerns.
+
+```yaml
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: app_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+```
+
+## Communication Patterns
+
+### 1. Synchronous (HTTP/gRPC)
+
+For request-response interactions.
+
+```mermaid
+sequenceDiagram
+    participant C as Cliente
+    participant G as Gateway
+    participant S as Service
+
+    C->>G: GET /api/users
+    G->>S: GET /users
+    S-->>G: users
+    G-->>C: users
+```
+
+### 2. Asynchronous (Events)
+
+For eventual consistency.
+
+```mermaid
+graph TB
+    PRODUCER([Producer]) --> KAFKA{{Kafka}}
+    KAFKA --> CON1([Consumer 1])
+    KAFKA --> CON2([Consumer 2])
+    KAFKA --> CON3([Consumer 3])
+```
+
+## Data Management
+
+### 1. Database per Service
+
+Each service owns its data.
+
+```
+┌─────────────────────────────────────┐
+│         Services                      │
+├─────────────────────────────────────┤
+│  Auth    │  Users  │  Orders       │
+│  Service │ Service│  Service     │
+└────┬─────┴───┬───┴──────┬──────┘
+     │        │         │
+┌────┴───┐┌───┴────┐┌───┴────┐
+│ Auth   ││ Users ││ Orders │
+│ DB     ││ DB    ││ DB     │
+│(PG)   ││(PG)  ││ (PG)  │
+└────────┘────────┘─────────┘
+```
+
+### 2. Saga Pattern
+
+Coordinating distributed transactions.
+
+```mermaid
+sequenceDiagram
+    participant O as Order Service
+    participant P as Payment Service
+    participant I as Inventory Service
+    participant N as Notification Service
+
+    O->>P: createPayment()
+    P-->>O: payment_ok
+    O->>I: reserveStock()
+    I-->>O: stock_reserved
+    O->>N: sendEmail()
+    N-->>O: email_sent
+    Note over O: If failure: compensate()
+```
+
+## Service Discovery
+
+### 1. Internal Network
+
+```yaml
+networks:
+  backend:
+    driver: overlay
+```
+
+### 2. DNS/Load Balancer
+
+```yaml
+services:
+  nginx:
+    image: nginx:alpine
+    networks:
+      - backend
+    dns:
+      - auth-service
+      - user-service
+```
+
+## Observability
+
+### 1. Logging
+
+```json
+{
+  "service": "user-service",
+  "trace_id": "abc123",
+  "level": "info",
+  "message": "User created",
+  "timestamp": "2024-01-01T00:00:00Z"
+}
+```
+
+### 2. Metrics
+
+```yaml
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    scrape_configs:
+      - job_name: 'services'
+        static_configs:
+          - targets: ['auth-service:9090', 'user-service:9090']
+```
+
+### 3. Distributed Tracing
+
+```yaml
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+```
+
+## Deployment Patterns
+
+### 1. Docker Compose (Development)
+
+```yaml
+version: '3.8'
+services:
+  api-gateway:
+    build: ./gateway
+    ports:
+      - "80:80"
+    depends_on:
+      - auth-service
+
+  auth-service:
+    build: ./services/auth
+    environment:
+      - DATABASE_URL=postgresql://auth_db
+```
+
+### 2. Kubernetes (Production)
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: auth
+          image: auth-service:latest
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  selector:
+    app: auth
+  ports:
+    - port: 80
+      targetPort: 8000
+```
+
+## Pros
+
+- **Independent scaling:** Scale services individually
+- **Fault isolation:** Failures don't cascade
+- **Technology flexibility:** Mix of languages/frameworks
+- **Deployment flexibility:** Deploy services independently
+
+## Cons
+
+- **Complexity:** More infrastructure needed
+- **Data consistency:** Eventual consistency challenges
+- **Testing:** Distributed system testing
+- **Debugging:** Distributed tracing needed
+
+## When to Use
+
+- Large teams working on different services
+- High scalability requirements
+- Complex business domains
+- Long-lived projects
+
+## When NOT to Use
+
+- Small teams or applications
+- Simple CRUD operations
+- Tight deadlines
+- Limited infrastructure
+
+## Related Patterns
+
+- [docker-implementation](../docker-implementation/SKILL.md)
+- [CQRS](templates/class/cqrs.mmd)
+- [Event-driven](templates/component/microservices.mmd)

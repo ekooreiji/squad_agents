@@ -1,0 +1,32 @@
+flowchart TD
+    START([Inicio Checkout]) --> LOAD_CART[Carregar Carrinho]
+
+    LOAD_CART --> CART_EMPTY{Carrinho Vazio?}
+    CART_EMPTY -->|Sim| EMPTY_CART([Carrinho Vazio - Adicione Itens])
+    CART_EMPTY -->|Nao| SHOW_ITEMS[Exibir Itens]
+
+    SHOW_ITEMS --> APPLY_COUPON{Aplicar Cupom?}
+    APPLY_COUPON -->|Sim| VALIDATE_COUPON{Validar Cupom}
+    VALIDATE_COUPON -->|Valido| APPLY_DISCOUNT[Aplicar Desconto]
+    VALIDATE_COUPON -->|Invalido| COUPON_ERR([Cupom Invalido])
+    APPLY_DISCOUNT --> CALC_TOTAL
+    APPLY_COUPON -->|Nao| CALC_TOTAL[Calcular Total]
+
+    CALC_TOTAL --> SELECT_PAY[Selecionar Forma Pagamento]
+    SELECT_PAY --> PROCESS_PG{Processar Pagamento}
+    PROCESS_PG --> PG_SUCCESS{Pagamento Aprovado?}
+
+    PG_SUCCESS -->|Sim| CREATE_ORDER[Criar Pedido]
+    CREATE_ORDER --> DEDUCT_STOCK[Descontar Estoque]
+    DEDUCT_STOCK --> SEND_EMAIL[Enviar Email Confirmacao]
+    SEND_EMAIL --> GENERATE_NF[Gerar Nota Fiscal]
+    GENERATE_NF --> CLEAR_CART[Limpar Carrinho]
+    CLEAR_CART --> SUCCESS([Checkout Concluido])
+
+    PG_SUCCESS -->|Nao| PAY_FAIL([Pagamento Recusado])
+    PROCESS_PG --> PAY_FAIL
+
+    style START fill:#e3f2fd,stroke:#1976d2
+    style SELECT_PAY fill:#fff3e0,stroke:#f57c00
+    style CREATE_ORDER fill:#e8f5e9,stroke:#388e3c
+    style PAY_FAIL fill:#ffebee,stroke:#d32f2f
