@@ -1,0 +1,28 @@
+flowchart TD
+    START([Novo Pedido]) --> VALIDATE[Validar Dados do Pedido]
+
+    VALIDATE --> CHECK_STOCK{Check Estoque}
+    CHECK_STOCK --> B{Estoque Suficiente?}
+
+    B -->|Sim| RESERVE[Reservar Estoque]
+    B -->|Nao| REJECT([Pedido Recusado - Sem Estoque])
+
+    RESERVE --> PROCESS_PAY{Processar Pagamento}
+    PROCESS_PAY --> PAY_CHECK{Pagamento Aprovado?}
+
+    PAY_CHECK -->|Sim| CONFIRM[Confirmar Pedido]
+    PAY_CHECK -->|Nao| CANCEL[Cancelar Reserva]
+    CANCEL --> REJECT
+
+    CONFIRM --> SEND_EMAIL[Enviar Email Confirmação]
+    SEND_EMAIL --> UPDATE_INV[Atualizar Inventário]
+    UPDATE_INV --> NOTIFY[Notificar Cliente]
+    NOTIFY --> COMPLETE([Pedido Concluido])
+
+    CHECK_STOCK -->|Nao| REJECT
+
+    style START fill:#e3f2fd,stroke:#1976d2
+    style CHECK_STOCK fill:#fff3e0,stroke:#f57c00
+    style RESERVE fill:#e8f5e9,stroke:#388e3c
+    style REJECT fill:#ffebee,stroke:#d32f2f
+    style COMPLETE fill:#e8f5e9,stroke:#388e3c

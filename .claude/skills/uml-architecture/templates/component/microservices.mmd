@@ -1,0 +1,56 @@
+graph TB
+    subgraph "API Gateway"
+        KONG([Kong API Gateway])
+    end
+
+    subgraph "Auth Service"
+        AUTH([Auth Service])
+        AUTH_DB[(Auth DB)]
+    end
+
+    subgraph "Users Service"
+        USERS([Users Service])
+        USERS_DB[(Users DB)]
+    end
+
+    subgraph "Orders Service"
+        ORDERS([Orders Service])
+        ORDERS_DB[(Orders DB)]
+    end
+
+    subgraph "Products Service"
+        PRODUCTS([Products Service])
+        PRODUCTS_DB[(Products DB)]
+    end
+
+    subgraph "Notifications"
+        EMAIL([Email Service])
+        PUSH([Push Service])
+    end
+
+    subgraph "Infrastructure"
+        REDIS[(Redis)]
+        KAFKA{{(Kafka)}}
+    end
+
+    KONG --> AUTH
+    KONG --> USERS
+    KONG --> ORDERS
+    KONG --> PRODUCTS
+
+    AUTH --> AUTH_DB
+    USERS --> USERS_DB
+    USERS --> REDIS
+    ORDERS --> ORDERS_DB
+    ORDERS --> REDIS
+    ORDERS --> KAFKA
+    PRODUCTS --> PRODUCTS_DB
+    PRODUCTS --> REDIS
+    PRODUCTS --> KAFKA
+
+    ORDERS --> EMAIL
+    ORDERS --> PUSH
+
+    style API Gateway fill:#e3f2fd,stroke:#1976d2
+    style Services fill:#e8f5e9,stroke:#388e3c
+    style Infrastructure fill:#f3e5f5,stroke:#7b1fa2

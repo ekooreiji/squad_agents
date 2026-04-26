@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitetura de Sistema</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="mermaid">
+graph TB
+    subgraph CLIENT["Frontend"]
+        B([Browser])
+        M([Mobile App])
+        A([Admin Panel])
+    end
+
+    subgraph GATEWAY["API Gateway"]
+        NG([Nginx])
+    end
+
+    subgraph API["Backend APIs"]
+        FA([Flask API])
+        FAPI([FastAPI])
+    end
+
+    subgraph DATA["Data Layer"]
+        PG[(PostgreSQL)]
+        R[(Redis)]
+        Q{{Queue}}
+    end
+
+    subgraph MONITOR["Monitoring"]
+        G([Grafana])
+        P([Prometheus])
+    end
+
+    CLIENT --> GATEWAY
+    GATEWAY --> API
+    API --> DATA
+    API --> MONITOR
+
+    style CLIENT fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style GATEWAY fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style API fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style DATA fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style MONITOR fill:#ffebee,stroke:#d32f2f,stroke-width:2px
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            },
+            securityLevel: 'loose'
+        });
+    </script>
+</body>
+</html>

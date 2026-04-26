@@ -1,0 +1,44 @@
+graph TB
+    subgraph "UI Layer"
+        CONTROLLERS([Controllers])
+        VIEW_MODELS([View Models])
+    end
+
+    subgraph "Use Cases Interactor"
+        INPUT([Input Port])
+        INTERACTOR([Interactor])
+        OUTPUT([Output Port])
+    end
+
+    subgraph "Entities"
+        ENTITIES([Entities])
+        BOUNDARIES([Boundaries])
+    end
+
+    subgraph "Interface Adapters"
+        PRESENTERS([Presenters])
+        GATEWAYS([Gateways])
+        MAPPERS([Mappers])
+    end
+
+    subgraph "Infrastructure"
+        DB[(Database)]
+        EXT([External])
+    end
+
+    CONTROLLERS --> INPUT
+    INPUT --> INTERACTOR
+    INTERACTOR --> OUTPUT
+    INTERACTOR --> ENTITIES
+    INTERACTOR --> BOUNDARIES
+    ENTITIES --> GATEWAYS
+    OUTPUT --> PRESENTERS
+    PRESENTERS --> CONTROLLERS
+    GATEWAYS --> MAPPERS
+    MAPPERS --> DB
+    CONTROLLERS --> VIEW_MODELS
+
+    style UI Layer fill:#e3f2fd,stroke:#1976d2
+    style Interactor fill:#fff3e0,stroke:#f57c00
+    style Entities fill:#e8f5e9,stroke:#388e3c
+    style Adapters fill:#f3e5f5,stroke:#7b1fa2

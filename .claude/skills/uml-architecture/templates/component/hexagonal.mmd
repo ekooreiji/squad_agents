@@ -1,0 +1,68 @@
+graph TB
+    subgraph "Primary Ports (Driving)"
+        REST([REST API])
+        GRAPHQL([GraphQL API])
+        CLI([CLI])
+    end
+
+    subgraph "Primary Adapters"
+        API_ADAPTER([API Adapter])
+        CLI_ADAPTER([CLI Adapter])
+    end
+
+    subgraph "Application Layer"
+        USE_CASE([Use Cases])
+        DTO([DTOs])
+    end
+
+    subgraph "Domain Layer"
+        ENTITIES([Entities])
+        VALUE_OBJ([Value Objects])
+        DOM_SERV([Domain Services])
+        EVENTS([Domain Events])
+        SPEC([Specifications])
+    end
+
+    subgraph "Secondary Ports (Driven)"
+        PERSISTENCE([Persistence Port])
+        MESSAGING([Messaging Port])
+        EXTERNAL([External Port])
+    end
+
+    subgraph "Secondary Adapters"
+        JPA_ADAPTER([JPA Adapter])
+        KAFKA_ADAPTER([Kafka Adapter])
+        HTTP_ADAPTER([HTTP Adapter])
+    end
+
+    subgraph "Infrastructure"
+        POSTGRES[(PostgreSQL)]
+        KAFKA{{(Kafka)}}
+        EXTERNAL_API([External API])
+    end
+
+    REST --> API_ADAPTER
+    GRAPHQL --> API_ADAPTER
+    CLI --> CLI_ADAPTER
+    API_ADAPTER --> USE_CASE
+    CLI_ADAPTER --> USE_CASE
+    USE_CASE --> DTO
+    DTO --> ENTITIES
+    USE_CASE --> DOM_SERV
+    ENTITIES --> VALUE_OBJ
+    ENTITIES --> SPEC
+    ENTITIES --> EVENTS
+    EVENTS --> MESSAGING
+
+    JPA_ADAPTER --> PERSISTENCE
+    KAFKA_ADAPTER --> MESSAGING
+    HTTP_ADAPTER --> EXTERNAL
+
+    PERSISTENCE --> POSTGRES
+    MESSAGING --> KAFKA
+    EXTERNAL --> EXTERNAL_API
+
+    style Primary Ports fill:#e3f2fd,stroke:#1976d2
+    style Core fill:#fff3e0,stroke:#f57c00
+    style Secondary Ports fill:#f3e5f5,stroke:#7b1fa2
+    style Infrastructure fill:#e8f5e9,stroke:#388e3c

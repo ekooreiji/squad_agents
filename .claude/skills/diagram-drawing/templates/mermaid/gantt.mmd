@@ -1,0 +1,40 @@
+gantt
+    title Ciclo de Desenvolvimento - Sprint 2
+
+    dateFormat YYYY-MM-DD
+
+    section Planejamento
+    Backlog Refinement       :a1, 2024-01-15, 2d
+    Sprint Planning          :a2, after a1, 1d
+    Sprint Goals Setup      :a3, after a2, 0.5d
+
+    section Desenvolvimento
+    Feature Auth API       :b1, after a3, 5d
+    Feature Users CRUD    :b2, after b1, 3d
+    Feature Orders API    :b3, after b1, 4d
+    Feature Payments      :b4, after b3, 3d
+
+    section Testing
+    Unit Tests - Auth      :c1, 2024-01-20, 3d
+    Unit Tests - Users     :c2, after c1, 2d
+    Unit Tests - Orders   :c3, after c2, 2d
+    Integration Tests     :c4, after b4, 3d
+
+    section Infrastructure
+    Docker Setup         :d1, 2024-01-15, 2d
+    CI/CD Pipeline      :d2, after d1, 3d
+    Staging Deploy      :d3, after c4, 1d
+
+    section Review
+    Code Review         :e1, 2024-01-28, 2d
+    Sprint Review      :e2, 2024-01-31, 1d
+    Retrospective     :e3, after e2, 0.5d
+
+    section Critical Path
+    Critical Path      :crit, until 2024-01-31
+    Feature Auth API    :crit, until 2024-01-22
+    Integration Tests  :crit, until 2024-01-30
+
+    section Milestones
+    MVP Ready         :milestone, 2024-01-30, 0d
+    Sprint End        :milestone, 2024-01-31, 0d

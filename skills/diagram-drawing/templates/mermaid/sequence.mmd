@@ -1,0 +1,66 @@
+sequenceDiagram
+    participant C as Cliente
+    participant LB as Load Balancer
+    participant A as API Gateway
+    participant FA as Flask API
+    participant FAPI as FastAPI
+    participant PG as PostgreSQL
+    participant R as Redis
+    participant Q as Queue
+
+    %% Solicitudes de escritura
+    C->>LB: POST /api/users
+    LB->>A: Routing
+    A->>FA: POST /users
+    activate FA
+
+    FA->>PG: INSERT users
+    activate PG
+    PG-->>FA: user_id: 123
+    deactivate PG
+
+    FA->>R: Cache user data
+    activate R
+    R-->>FA: OK
+    deactivate R
+
+    FA->>Q: Publish event
+    activate Q
+    Q-->>FA: ACK
+    deactivate Q
+
+    FA-->>A: 201 Created
+    deactivate FA
+    A-->>LB: 201 Created
+    LB-->>C: 201 Created
+
+    Note over C,Q: Escritura concluida
+
+    %% Solicitudes de leitura
+    C->>LB: GET /api/users/123
+    LB->>A: Routing
+    A->>FAPI: GET /users/:id
+    activate FAPI
+
+    FAPI->>R: GET cache
+    activate R
+    R-->>FAPI: user_data
+    deactivate R
+
+    alt Cache miss
+        FAPI->>PG: SELECT users
+        activate PG
+        PG-->>FAPI: user_row
+        deactivate PG
+        FAPI->>R: SET cache
+        activate R
+        R-->>FAPI: OK
+        deactivate R
+    end
+
+    FAPI-->>A: 200 OK
+    deactivate FAPI
+    A-->>LB: 200 OK
+    LB-->>C: user_data
+
+    Note over C,FAPI: Leitura concluida

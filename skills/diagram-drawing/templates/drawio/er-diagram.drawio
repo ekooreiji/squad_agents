@@ -1,0 +1,116 @@
+<mxfile host="app.diagrams.net" modified="2024-01-01T00:00:00.000Z" agent="5.0" version="21.0.0" type="device">
+  <diagram id="er-diagram" name="ER">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" guide="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- User Table -->
+        <mxCell id="user-table" value="USER" style="swimlane;fillColor=#e3f2fd;strokeColor=#1976d2;strokeWidth=2;fontSize=14;fontStyle=1;startSize=30" vertex="1" parent="1">
+          <mxGeometry x="50" y="50" width="200" height="180" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="user-id" value="+ id: UUID (PK)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="60" y="90" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="user-name" value="+ name: VARCHAR" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="60" y="120" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="user-email" value="+ email: VARCHAR (UK)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="60" y="150" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="user-created" value="+ created_at: TIMESTAMP" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="60" y="180" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Order Table -->
+        <mxCell id="order-table" value="ORDER" style="swimlane;fillColor=#e8f5e9;strokeColor=#388e3c;strokeWidth=2;fontSize=14;fontStyle=1;startSize=30" vertex="1" parent="1">
+          <mxGeometry x="400" y="50" width="200" height="180" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="order-id" value="+ id: UUID (PK)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="410" y="90" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="order-user" value="+ user_id: UUID (FK)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#1976d2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="410" y="120" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="order-total" value="+ total: DECIMAL" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="410" y="150" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="order-status" value="+ status: ENUM" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="410" y="180" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Product Table -->
+        <mxCell id="product-table" value="PRODUCT" style="swimlane;fillColor=#fff3e0;strokeColor=#f57c00;strokeWidth=2;fontSize=14;fontStyle=1;startSize=30" vertex="1" parent="1">
+          <mxGeometry x="400" y="350" width="200" height="150" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="product-id" value="+ id: UUID (PK)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="410" y="390" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="product-name" value="+ name: VARCHAR" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="410" y="420" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="product-price" value="+ price: DECIMAL" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="410" y="450" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- OrderItem Table -->
+        <mxCell id="item-table" value="ORDER_ITEM" style="swimlane;fillColor=#f3e5f5;strokeColor=#7b1fa2;strokeWidth=2;fontSize=14;fontStyle=1;startSize=30" vertex="1" parent="1">
+          <mxGeometry x="750" y="50" width="200" height="180" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="item-id" value="+ id: UUID (PK)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="760" y="90" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="item-order" value="+ order_id: UUID (FK)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#1976d2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="760" y="120" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="item-product" value="+ product_id: UUID (FK)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#f57c00;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="760" y="150" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="item-qty" value="+ quantity: INT" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#000000" vertex="1" parent="1">
+          <mxGeometry x="760" y="180" width="180" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Relationships -->
+        <mxCell id="rel1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=diamondThin;endFill=1;endSize=10" edge="1" parent="1" source="user-table" target="order-table">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel1-label" value="1:N" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="280" y="120" width="40" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=diamondThin;endFill=1;endSize=10" edge="1" parent="1" source="order-table" target="item-table">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel2-label" value="1:N" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="640" y="120" width="40" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=diamondThin;endFill=1;endSize=10" edge="1" parent="1" source="product-table" target="item-table">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel3-label" value="1:N" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="680" y="300" width="40" height="20" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
