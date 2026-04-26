@@ -1,0 +1,214 @@
+# Hexagonal Architecture (Ports & Adapters)
+
+## Overview
+
+Hexagonal Architecture (also known as Ports and Adapters) separates the core business logic from external concerns like databases, UI, and external services.
+
+## Structure
+
+```
+┌─────────────────────────────────────────────────────┐
+│                    Adapters                         │
+│  ┌──────────────────┐    ┌───────────────────┐    │
+│  │ Primary (Driving)│    │Secondary(Driven)  │    │
+│  │  REST API        │    │  PostgreSQL       │    │
+│  │  CLI             │    │  Redis            │    │
+│  │  UI              │    │  External APIs    │    │
+│  └────────┬─────────┘    └─────────┬─────────┘    │
+├───────────┼───────────────────────┼──────────────┤
+│           │         Ports          │              │
+│  ┌────────┴──────────────────────┴────────┐    │
+│  │      Input Ports    │    Output Ports     │    │
+│  └────────────────────┴─────────────────────┘    │
+├─────────────────────────────────────────────────┤
+│                  Core (Domain)                   │
+│  ┌─────────────────────────────────────────┐   │
+│  │     Application  │  Domain  │  Services  │   │
+│  └─────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────┘
+```
+
+## Core Concepts
+
+### 1. Ports
+
+Ports are interfaces that define how the outside world interacts with the core.
+
+#### Primary Ports (Driving)
+
+- Defined by the **core**
+- How external actors **drive** the application
+- Examples: REST API interface, CLI commands
+
+```typescript
+interface CreateUserPort {
+  createUser(input: CreateUserInput): Promise<User>;
+}
+```
+
+#### Secondary Ports (Driven)
+
+- Defined by the **core**
+- How the core **drives** external actors
+- Examples: Database repository, messaging
+
+```typescript
+interface UserRepositoryPort {
+  save(user: User): Promise<User>;
+  findById(id: string): Promise<User>;
+}
+```
+
+### 2. Adapters
+
+Adapters implement the ports and handle the external world.
+
+#### Primary Adapters
+
+- **Drive** the application
+- Examples: REST controller, CLI handler
+
+```typescript
+class RestUserAdapter implements CreateUserPort {
+  constructor(private useCase: CreateUserUseCase) {}
+
+  async createUser(req: Request): Promise<Response> {
+    const input = req.body;
+    const user = await this.useCase.execute(input);
+    return response.json(user);
+  }
+}
+```
+
+#### Secondary Adapters
+
+- Are **driven** by the application
+- Examples: PostgreSQL repository, Redis cache
+
+```typescript
+class PostgresUserAdapter implements UserRepositoryPort {
+  constructor(private db: Database) {}
+
+  async save(user: User): Promise<User> {
+    await this.db.query('INSERT INTO users VALUES ($1, $2)', [user.id, user.name]);
+    return user;
+  }
+}
+```
+
+### 3. Core (Domain)
+
+Contains pure business logic without any dependencies on external frameworks.
+
+```typescript
+class User {
+  constructor(
+    private readonly id: string,
+    private name: string,
+    private email: string
+  ) {
+    this.validate();
+  }
+
+  private validate(): void {
+    if (!this.email) {
+      throw new Error('Email is required');
+    }
+  }
+}
+```
+
+## Implementation Example
+
+### Ports (Domain)
+
+```typescript
+// Input Port
+interface CreateUserInputPort {
+  execute(input: CreateUserInput): Promise<User>;
+}
+
+// Output Port
+interface UserRepositoryOutputPort {
+  save(user: User): Promise<User>;
+  findByEmail(email: string): Promise<User | null>;
+}
+```
+
+### Core (Application Service)
+
+```typescript
+class CreateUserService {
+  constructor(
+    private userRepo: UserRepositoryOutputPort
+  ) {}
+
+  async execute(input: CreateUserInput): Promise<User> {
+    const existing = await this.userRepo.findByEmail(input.email);
+    if (existing) {
+      throw new Error('Email already exists');
+    }
+
+    const user = new User({
+      name: input.name,
+      email: input.email
+    });
+
+    return this.userRepo.save(user);
+  }
+}
+```
+
+### Adapters (Infrastructure)
+
+```typescript
+// Primary Adapter (REST)
+class RestCreateUserAdapter implements CreateUserInputPort {
+  constructor(private service: CreateUserService) {}
+
+  async execute(req: Request): Promise<Response> {
+    const user = await this.service.execute(req.body);
+    return response.status(201).json(user);
+  }
+}
+
+// Secondary Adapter (PostgreSQL)
+class PostgresUserRepository implements UserRepositoryOutputPort {
+  async save(user: User): Promise<User> {
+    await db.query('INSERT INTO users VALUES ($1, $2)', [user.id, user.email]);
+    return user;
+  }
+}
+```
+
+## Pros
+
+- **High testability:** Core has no dependencies
+- **Framework agnostic:** Easy to switch databases/UI
+- **Clear boundaries:** External concerns are isolated
+- **Business logic first:** Focus on domain
+
+## Cons
+
+- **More abstraction:** Initial overhead
+- **More code:** More interfaces and adapters
+- **Learning curve:** New developers may find it complex
+
+## When to Use
+
+- Complex domain logic (DDD)
+- Testability requirements
+- Multiple UI/database options
+- Long-lived projects
+
+## When NOT to Use
+
+- Simple CRUD applications
+- Very small projects
+- Tight deadlines
+
+## Related Patterns
+
+- [Layered Architecture](layers.txt)
+- [CQRS](templates/class/cqrs.mmd)
+- [Event Sourcing](templates/component/microservices.mmd)

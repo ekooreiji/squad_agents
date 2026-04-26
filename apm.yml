@@ -2,6 +2,104 @@ name: squad_Developer
 version: 1.0.0
 
 agents:
+  path: agents/po_agent.md
+  path: agents/developer_agent.md
+  path: agents/architect_agent.md
+  path: agents/techlead_agent.md
+  path: agents/code_review_agent.md
+  path: agents/test_agent.md
+  path: agents/doc_writer_agent.md
+  path: agents/design_prototype_agent.md
+  path: agents/agente-desktop-backend/agent.md
+  path: agents/agente-desktop-frontend/agent.md
+  path: agents/agente-mobile-backend/agent.md
+  path: agents/agente-mobile-frontend/agent.md
+  path: agents/agente-web-backend/agent.md
+  path: agents/agente-web-frontend/agent.md
+
+skills:
+  path: skills/acceptance-criteria-generator/SKILL.md
+  path: skills/api-design/SKILL.md
+  path: skills/atomic-design/SKILL.md
+  path: skills/bdd-scenarios/SKILL.md
+  path: skills/bem/SKILL.md
+  path: skills/bootstrap/SKILL.md
+  path: skills/branding/SKILL.md
+  path: skills/briefing-demandas/SKILL.md
+  path: skills/bulma/SKILL.md
+  path: skills/code-review/SKILL.md
+  path: skills/color-theory/SKILL.md
+  path: skills/component-driven-development/SKILL.md
+  path: skills/comunicacao-visual/SKILL.md
+  path: skills/css-animations/SKILL.md
+  path: skills/database-architecture/SKILL.md
+  path: skills/design-patterns/SKILL.md
+  path: skills/design-thinking/SKILL.md
+  path: skills/devops/SKILL.md
+  path: skills/diagram-drawing/SKILL.md
+  path: skills/digital-tools/SKILL.md
+  path: skills/django/SKILL.md
+  path: skills/docker/SKILL.md
+  path: skills/documentation-generators/SKILL.md
+  path: skills/documentation-docusaurus/SKILL.md
+  path: skills/documentation-material-design/SKILL.md
+  path: skills/documentation/SKILL.md
+  path: skills/fastapi/SKILL.md
+  path: skills/flask/SKILL.md
+  path: skills/foundation-css/SKILL.md
+  path: skills/functional-programming/SKILL.md
+  path: skills/gestao-projetos/SKILL.md
+  path: skills/hexagonal-architecture/SKILL.md
+  path: skills/html-css-fundamentals/SKILL.md
+  path: skills/js-airbnb-style/SKILL.md
+  path: skills/js-google-style/SKILL.md
+  path: skills/js-standard-style/SKILL.md
+  path: skills/jest/SKILL.md
+  path: skills/logging-monitoring/SKILL.md
+  path: skills/material-design/SKILL.md
+  path: skills/materialize/SKILL.md
+  path: skills/mkdocs-material/SKILL.md
+  path: skills/mongodb/SKILL.md
+  path: skills/motion-design/SKILL.md
+  path: skills/motion-ui/SKILL.md
+  path: skills/nextjs/SKILL.md
+  path: skills/nodejs/SKILL.md
+  path: skills/pep8-docstring-generator/SKILL.md
+  path: skills/pep8-reference/SKILL.md
+  path: skills/pesquisa-tendencias/SKILL.md
+  path: skills/poo-best-practices/SKILL.md
+  path: skills/postgresql/SKILL.md
+  path: skills/pure-css/SKILL.md
+  path: skills/react-native/SKILL.md
+  path: skills/react/SKILL.md
+  path: skills/redis/SKILL.md
+  path: skills/requirements-analyzer/SKILL.md
+  path: skills/responsive-design/SKILL.md
+  path: skills/ruby-on-rails/SKILL.md
+  path: skills/security-patterns/SKILL.md
+  path: skills/security/SKILL.md
+  path: skills/software-architecture/SKILL.md
+  path: skills/spectre-css/SKILL.md
+  path: skills/stakeholder-impact-analyzer/SKILL.md
+  path: skills/tailwind-css/SKILL.md
+  path: skills/template-library/SKILL.md
+  path: skills/testing-strategies/SKILL.md
+  path: skills/typescript/SKILL.md
+  path: skills/typography/SKILL.md
+  path: skills/ui-design/SKILL.md
+  path: skills/uml-architecture/SKILL.md
+  path: skills/user-journey-mapper/SKILL.md
+  path: skills/ux-design/SKILL.md
+  path: skills/visual-identity/SKILL.md
+  path: skills/vue/SKILL.md
+  path: skills/performance/SKILL.md
+  path: skills/api/SKILL.md
+  path: skills/flutter/SKILL.md
+
+name: squad_Developer
+version: 1.0.0
+
+agents:
   path: .claude/agents/po_agent.md
 skills:
   path: .claude/skills/acceptance_criteria_generator.md

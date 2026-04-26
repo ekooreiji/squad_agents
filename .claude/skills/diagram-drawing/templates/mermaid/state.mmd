@@ -1,0 +1,65 @@
+stateDiagram-v2
+    [*] --> Disconnected
+
+    state Disconnected {
+        [*] --> Idle
+        Idle --> Connecting : connect()
+        Connecting --> Connected : on_connected
+        Connecting --> Error : on_error
+        Error --> Idle : retry()
+        Error --> Disconnected : disconnect()
+    }
+
+    state Connected {
+        [*] --> Ready
+        Ready --> Authenticating : authenticate()
+        Authenticating --> Authenticated : on_auth_success
+        Authenticating --> AuthFailed : on_auth_error
+        AuthFailed --> Ready : retry()
+        AuthFailed --> Authenticated : bypass (dev)
+
+        Authenticated --> Ready : logout()
+        Authenticated --> Sending : send_message()
+        Authenticated --> Subscribing : subscribe()
+
+        Ready --> Subscribing : subscribe()
+        Subscribing --> Subscribed : on_subscribed
+        Subscribing --> Ready : unsubscribe()
+
+        Subscribed --> Ready : unsubscribe()
+        Subscribed --> Sending : send_message()
+        Subscribed --> Unsubscribing : unsubscribe()
+        Unsubscribing --> Ready : on_unsubscribed
+
+        Sending --> Ready : on_sent
+        Sending --> Failed : on_error
+        Failed --> Ready : retry()
+    }
+
+    Disconnected --> Connected : reconnect()
+
+    state Failed {
+        [*] --> RetryScheduled
+        RetryScheduled --> Retrying : on_retry_timer
+        Retrying --> Disconnected : max_retries? no
+        Retrying --> Dead : max_retries? yes
+        Dead --> [*] : manual_reset
+    }
+
+    Ready --> Disconnected : disconnect()
+    Authenticated --> Disconnected : disconnect()
+    Subscribed --> Disconnected : disconnect()
+
+    note right of Connected
+        Estados de conexao ativa:
+        - Ready: Aguardando comando
+        - Authenticated: Autenticado
+        - Subscribed: Assinando topicos
+    end note
+
+    note right of Disconnected
+        Estados de conexao inativa:
+        - Idle: Aguardando conexao
+        - Connecting: Estabelecendo conexao
+        - Error: Erro temporario
+    end note

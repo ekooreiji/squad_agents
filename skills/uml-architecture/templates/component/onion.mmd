@@ -1,0 +1,57 @@
+graph TB
+    subgraph "Client Layer"
+        BROWSER([Browser])
+        MOBILE([Mobile App])
+        API_CLIENT([API Consumer])
+    end
+
+    subgraph "Load Balancer"
+        LB([Nginx / HAProxy])
+    end
+
+    subgraph "API Gateway"
+        GW([API Gateway])
+    end
+
+    subgraph "Application Services"
+        FLASK([Flask API])
+        FASTAPI([FastAPI])
+    end
+
+    subgraph "Message Queue"
+        KAFKA{{(Kafka)}}
+    end
+
+    subgraph "Data Layer"
+        POSTGRES[(PostgreSQL)]
+        REDIS[(Redis)]
+        S3[(Object Storage)]
+    end
+
+    subgraph "Monitoring"
+        PROM([Prometheus])
+        GRAF([Grafana])
+    end
+
+    BROWSER --> LB
+    MOBILE --> LB
+    API_CLIENT --> LB
+    LB --> GW
+    GW --> FLASK
+    GW --> FASTAPI
+    FLASK --> POSTGRES
+    FLASK --> REDIS
+    FASTAPI --> POSTGRES
+    FASTAPI --> REDIS
+    FASTAPI --> KAFKA
+    FLASK --> S3
+    FASTAPI --> S3
+    PROM --> FLASK
+    PROM --> FASTAPI
+    GRAF --> PROM
+
+    style Client fill:#e3f2fd,stroke:#1976d2
+    style Gateway fill:#fff3e0,stroke:#f57c00
+    style Services fill:#e8f5e9,stroke:#388e3c
+    style Data fill:#f3e5f5,stroke:#7b1fa2
+    style Monitoring fill:#ffebee,stroke:#d32f2f

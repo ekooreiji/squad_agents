@@ -1,0 +1,44 @@
+sequenceDiagram
+    participant U as Usuario
+    participant A as Auth API
+    participant U_REPO as User Repository
+    participant D as Database
+    participant JWT as JWT Service
+    participant R as Redis
+    participant M as Email Service
+
+    U->>A: POST /auth/register
+    A->>U_REPO: findByEmail(email)
+    U_REPO->>D: SELECT
+    D-->>U_REPO: null
+    U_REPO-->>A: null
+    alt email available
+        A->>D: INSERT user
+        D-->>A: user_id
+        A->>M: Send welcome email
+        M-->>A: sent
+        A->>JWT: Generate token
+        JWT-->>A: token
+        A->>R: Store session
+        R-->>A: OK
+        A-->>U: { access_token, user }
+    else email taken
+        A-->>U: 409 Conflict
+    end
+
+    U->>A: POST /auth/login
+    A->>U_REPO: findByEmail(email)
+    U_REPO->>D: SELECT
+    D-->>U_REPO: user
+    alt user found
+        U_REPO-->>A: user
+        A->>JWT: Verify password
+        JWT-->>A: valid
+        A->>JWT: Generate token
+        JWT-->>A: token
+        A->>R: Update session
+        R-->>A: OK
+        A-->>U: { access_token, user }
+    else invalid credentials
+        A-->>U: 401 Unauthorized
+    end

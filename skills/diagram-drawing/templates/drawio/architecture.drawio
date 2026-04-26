@@ -1,0 +1,92 @@
+<mxfile host="app.diagrams.net" modified="2024-01-01T00:00:00.000Z" agent="5.0" version="21.0.0" type="device">
+  <diagram id="architecture-diagram" name="Arquitetura">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" guide="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Frontend Layer -->
+        <mxCell id="fe-group" value="Frontend" style="swimlane;fillColor=#e3f2fd;strokeColor=#1976d2;strokeWidth=2;fontSize=14;fontStyle=1;startSize=30" vertex="1" parent="1">
+          <mxGeometry x="50" y="30" width="200" height="180" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="browser" value="Browser" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="100" y="80" width="100" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="mobile" value="Mobile App" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="100" y="140" width="100" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- API Gateway -->
+        <mxCell id="nginx" value="Nginx" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontSize=14" vertex="1" parent="1">
+          <mxGeometry x="350" y="80" width="100" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Backend Layer -->
+        <mxCell id="be-group" value="Backend APIs" style="swimlane;fillColor=#e8f5e9;strokeColor=#388e3c;strokeWidth=2;fontSize=14;fontStyle=1;startSize=30" vertex="1" parent="1">
+          <mxGeometry x="550" y="30" width="200" height="180" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="flask" value="Flask API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="600" y="80" width="100" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="fastapi" value="FastAPI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="600" y="140" width="100" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Database Layer -->
+        <mxCell id="db-group" value="Data Layer" style="swimlane;fillColor=#f3e5f5;strokeColor=#7b1fa2;strokeWidth=2;fontSize=14;fontStyle=1;startSize=30" vertex="1" parent="1">
+          <mxGeometry x="50" y="280" width="700" height="150" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="postgres" value="PostgreSQL" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#7b1fa2;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="150" y="350" width="100" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="redis" value="Redis" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#7b1fa2;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="350" y="350" width="100" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="queue" value="Queue" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#7b1fa2;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="550" y="350" width="100" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="conn1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=classic;endFill=1" edge="1" parent="1" source="browser" target="nginx">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="conn2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=classic;endFill=1" edge="1" parent="1" source="mobile" target="nginx">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="conn3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=classic;endFill=1" edge="1" parent="1" source="nginx" target="flask">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="conn4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=classic;endFill=1" edge="1" parent="1" source="nginx" target="fastapi">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="conn5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=classic;endFill=1" edge="1" parent="1" source="flask" target="postgres">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="conn6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=classic;endFill=1" edge="1" parent="1" source="fastapi" target="postgres">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="conn7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=classic;endFill=1" edge="1" parent="1" source="fastapi" target="redis">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="conn8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#455a64;endArrow=classic;endFill=1" edge="1" parent="1" source="fastapi" target="queue">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

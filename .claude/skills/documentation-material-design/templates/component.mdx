@@ -1,0 +1,115 @@
+---
+title: Button Component
+description: A versatile button component with multiple variants
+---
+
+import { Button, Stack, Box } from '@mui/material'
+import { ComponentCard } from '../../components/ComponentCard'
+import { PropsTable } from '../../components/PropsTable'
+import { CodeBlock } from '../../components/CodeBlock'
+import { InfoBox, TipBox, WarningBox } from '../../components/Admonitions'
+
+export const buttonProps = [
+  { name: 'variant', type: "'contained' | 'outlined' | 'text'", default: "'contained'", description: 'Visual style variant' },
+  { name: 'color', type: 'string', default: "'primary'", description: 'Color of the button' },
+  { name: 'size', type: "'small' | 'medium' | 'large'", default: "'medium'", description: 'Size of the button' },
+  { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable the button' },
+  { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Full width button' },
+  { name: 'onClick', type: '() => void', default: '-', description: 'Click handler' },
+  { name: 'startIcon', type: 'ReactNode', default: '-', description: 'Icon before text' },
+  { name: 'endIcon', type: 'ReactNode', default: '-', description: 'Icon after text' },
+]
+
+# Button Component
+
+<ComponentCard
+  title="Button"
+  description="A versatile button component with multiple variants and sizes"
+  status="stable"
+  version="2.0.0"
+/>
+
+## Overview
+
+The Button component is used to trigger actions or navigate to pages.
+
+<InfoBox title="Note">
+  This component is built on top of Material UI Button.
+</InfoBox>
+
+## Variants
+
+<CodeBlock
+  code={`import { Button } from '@mui/material'
+
+function Variants() {
+  return (
+    <Stack direction="row" spacing={2}>
+      <Button variant="contained">Contained</Button>
+      <Button variant="outlined">Outlined</Button>
+      <Button variant="text">Text</Button>
+    </Stack>
+  )
+}`}
+/>
+
+## Sizes
+
+<CodeBlock
+  code={`import { Button } from '@mui/material'
+
+function Sizes() {
+  return (
+    <Stack direction="row" spacing={2}>
+      <Button size="small">Small</Button>
+      <Button size="medium">Medium</Button>
+      <Button size="large">Large</Button>
+    </Stack>
+  )
+}`}
+/>
+
+## Props
+
+<PropsTable props={buttonProps} />
+
+## Usage Example
+
+<CodeBlock
+  code={`import { Button } from '@mui/material'
+import SaveIcon from '@mui/icons-material/Save'
+
+function Example() {
+  return (
+    <Button
+      variant="contained"
+      color="primary"
+      size="large"
+      startIcon={<SaveIcon />}
+      onClick={() => console.log('clicked')}
+    >
+      Save
+    </Button>
+  )
+}`}
+/>
+
+<TipBox title="Tip">
+  Use startIcon for primary actions to provide visual emphasis.
+</TipBox>
+
+<WarningBox title="Warning">
+  Avoid using too many buttons with the same color in the same area.
+</WarningBox>
+
+## Accessibility
+
+- Use meaningful labels
+- Ensure sufficient color contrast
+- Focus states are visible
+
+## Related Components
+
+- [IconButton](./icon-button)
+- [Fab](./fab)
+- [ButtonGroup](./button-group)

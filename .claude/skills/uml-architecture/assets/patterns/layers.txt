@@ -1,0 +1,162 @@
+# Layered Architecture Pattern
+
+## Overview
+
+The Layered Architecture pattern organizes code into layers, where each layer has specific responsibilities and knows only about the layer directly below it.
+
+## Structure
+
+```
+┌─────────────────────────────────────────┐
+│           Presentation                  │ ← Controllers, Views, DTOs
+├─────────────────────────────────────────┤
+│           Application                   │ ← Services, Use Cases
+├─────────────────────────────────────────┤
+│             Domain                      │ ← Entities, Value Objects, Domain Events
+├────────────��────────────────────────────┤
+│          Infrastructure               │ ← Database, External APIs, Cache
+└─────────────────────────────────────────┘
+```
+
+## Layers
+
+### 1. Presentation Layer
+
+**Responsibility:** Handle user interface and input/output
+
+**Components:**
+- Controllers (handle HTTP requests)
+- Views (render UI)
+- DTOs (Data Transfer Objects)
+
+**Examples:**
+```python
+# Python Flask
+@app.route('/users', methods=['POST'])
+def create_user():
+    dto = request.get_json()
+    user = user_service.create_user(dto)
+    return jsonify(user.to_dict()), 201
+```
+
+```typescript
+// TypeScript Express
+app.post('/users', async (req, res) => {
+  const dto = req.body;
+  const user = await userService.createUser(dto);
+  res.status(201).json(user);
+});
+```
+
+### 2. Application Layer
+
+**Responsibility:** Define application-specific business rules
+
+**Components:**
+- Services (coordinate domain objects)
+- Use Cases
+- Mappers
+
+**Examples:**
+```python
+class UserService:
+    def __init__(self, user_repo: UserRepository):
+        self.user_repo = user_repo
+
+    def create_user(self, dto):
+        user = User(name=dto['name'], email=dto['email'])
+        return self.user_repo.save(user)
+```
+
+```typescript
+class UserService {
+  async createUser(dto: CreateUserDTO): Promise<User> {
+    const user = new User({ name: dto.name, email: dto.email });
+    return this.userRepo.save(user);
+  }
+}
+```
+
+### 3. Domain Layer
+
+**Responsibility:** Encapsulate core business logic
+
+**Components:**
+- Entities (persistent objects with identity)
+- Value Objects (immutable objects without identity)
+- Domain Events
+- Specifications
+- Domain Services
+
+**Examples:**
+```python
+class User(Entity):
+    def __init__(self, name: str, email: str):
+        self.name = name
+        self.email = email
+
+    def validate(self):
+        if not self.email:
+            raise ValueError("Email is required")
+```
+
+### 4. Infrastructure Layer
+
+**Responsibility:** Handle external concerns
+
+**Components:**
+- Database connections
+- External API clients
+- Cache implementations
+- File storage
+
+**Examples:**
+```python
+class PostgreSQLUserRepository(UserRepository):
+    def __init__(self, connection):
+        self.connection = connection
+
+    def save(self, user):
+        cursor = self.connection.cursor()
+        cursor.execute("INSERT INTO users VALUES (%s, %s)", (user.id, user.name))
+```
+
+## Dependencies
+
+| Layer | Depends On |
+|-------|------------|
+| Presentation | Application |
+| Application | Domain, Infrastructure |
+| Domain | None |
+| Infrastructure | None (external) |
+
+## Pros
+
+- Clear separation of concerns
+- Easy to understand and maintain
+- Good for small to medium applications
+- Easy to test (mock layers)
+
+## Cons
+
+- Can lead to anemic domain model
+- Tight coupling between layers
+- Changes in one layer may affect others
+
+## When to Use
+
+- Small to medium applications
+- Teams new to architecture patterns
+- When simplicity is preferred over flexibility
+
+## When NOT to Use
+
+- Complex domain logic
+- Highly scalable systems
+- Event-driven architectures
+
+## Related Patterns
+
+- [hexagonal-architecture](../hexagonal-architecture/SKILL.md)
+- [cqrs](templates/class/cqrs.mmd)
+- [docker-implementation](../docker-implementation/SKILL.md) (Infrastructure)

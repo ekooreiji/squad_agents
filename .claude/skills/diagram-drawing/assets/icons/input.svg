@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <rect x="8" y="24" width="48" height="16" rx="2" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+  <polygon points="32,12 42,24 22,24" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+  <text x="32" y="36" text-anchor="middle" fill="#1976d2" font-size="8" font-weight="bold">INPUT</text>
+</svg>

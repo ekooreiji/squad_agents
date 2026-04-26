@@ -1,0 +1,78 @@
+erDiagram
+    USER ||--o{ ORDER : has
+    USER ||--o{ ADDRESS : has
+    USER ||--o{ REVIEW : writes
+    USER {
+        uuid id PK "id do usuario"
+        string name "nome completo"
+        string email "email unico"
+        string password_hash "senha hasheada"
+        enum role "admin, user, guest"
+        timestamp created_at "data de criacao"
+        timestamp updated_at "ultima atualizacao"
+    }
+
+    ORDER ||--o{ ORDER_ITEM : contains
+    ORDER {
+        uuid id PK "id do pedido"
+        uuid user_id FK "referencia ao usuario"
+        decimal total "valor total"
+        enum status "pending, confirmed, shipped, delivered"
+        enum payment_status "pending, paid, refunded"
+        timestamp created_at "data de criacao"
+        timestamp updated_at "ultima atualizacao"
+    }
+
+    ORDER_ITEM {
+        uuid id PK "id do item"
+        uuid order_id FK "referencia ao pedido"
+        uuid product_id FK "referencia ao produto"
+        integer quantity "quantidade"
+        decimal unit_price "preco unitario"
+        decimal subtotal "subtotal"
+    }
+
+    PRODUCT ||--o{ ORDER_ITEM : included in
+    PRODUCT ||--o{ REVIEW : has
+    PRODUCT {
+        uuid id PK "id do produto"
+        string name "nome"
+        text description "descricao"
+        decimal price "preco"
+        integer stock "estoque"
+        uuid category_id FK "categoria"
+        boolean active "produto ativo"
+        timestamp created_at "data de criacao"
+        timestamp updated_at "ultima atualizacao"
+    }
+
+    CATEGORY ||--o{ PRODUCT : contains
+    CATEGORY {
+        uuid id PK "id da categoria"
+        string name "nome"
+        uuid parent_id FK "categoria pai"
+    }
+
+    ADDRESS {
+        uuid id PK "id do endereco"
+        uuid user_id FK "referencia ao usuario"
+        string street "rua"
+        string city "cidade"
+        string state "estado"
+        string zip_code "cep"
+        string country "pais"
+        enum type "billing, shipping"
+    }
+
+    REVIEW {
+        uuid id PK "id da avaliacao"
+        uuid user_id FK "referencia ao usuario"
+        uuid product_id FK "referencia ao produto"
+        integer rating "nota 1-5"
+        text comment "comentario"
+        timestamp created_at "data de criacao"
+    }
+
+    %% Indices comuns
+    USER -- USER_EMAIL_UNIQUE : "unique(email)"
+    PRODUCT -- PRODUCT_CATEGORY_IDX : "index(category_id)"

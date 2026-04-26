@@ -1,0 +1,68 @@
+classDiagram
+    direction TB
+
+    class Entity~T~ {
+        <<abstract>>
+        +UUID id
+        +DateTime createdAt
+        +DateTime updatedAt
+        +validate() void
+    }
+
+    class AggregateRoot~T~ {
+        <<abstract>>
+        +UUID id
+        +DateTime createdAt
+        +events: DomainEvent[]
+        +addEvent(event) void
+        +clearEvents() DomainEvent[]
+    }
+
+    class ValueObject {
+        <<abstract>>
+        +equals(other) Boolean
+    }
+
+    class DomainEvent {
+        <<interface>>
+        +UUID eventId
+        +DateTime occurredAt
+    }
+
+    class UserCreated {
+        +UUID userId
+        +String email
+    }
+
+    class OrderPlaced {
+        +UUID orderId
+        +UUID userId
+        +Decimal total
+    }
+
+    class User {
+        +UUID id
+        +String name
+        +String email
+        +create(name, email) User
+        +update(name) void
+    }
+
+    class Order {
+        +UUID id
+        +UUID userId
+        +OrderStatus status
+        +Decimal total
+        +placeOrder(userId, items) Order
+        +addItem(item) void
+        +cancel() void
+        +confirm() void
+    }
+
+    Entity <|-- User
+    Entity <|-- Order
+    Entity <|-- OrderItem
+    AggregateRoot <|-- User
+    AggregateRoot <|-- Order
+    UserCreated ..> DomainEvent
+    OrderPlaced ..> DomainEvent

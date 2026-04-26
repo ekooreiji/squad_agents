@@ -1,0 +1,25 @@
+{
+  "source": {
+    "include": ["src"],
+    "includePattern": "\\.(js|jsx|ts|tsx)$",
+    "exclude": ["node_modules", "**/*.test.js"]
+  },
+  "opts": {
+    "template": "templates/minami",
+    "encoding": "utf8",
+    "destination": "./docs",
+    "recurse": true,
+    "verbose": true
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "default": {
+      "layoutFile": "templates/default/layout.tmpl",
+      "staticFiles": {
+        "include": ["templates/static"]
+      }
+    }
+  }
+}

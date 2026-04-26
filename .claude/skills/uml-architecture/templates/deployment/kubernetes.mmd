@@ -1,0 +1,46 @@
+graph TB
+    subgraph "Kubernetes Cluster"
+        subgraph "Ingress"
+            INGRESS([Ingress Controller])
+        end
+
+        subgraph "Services"
+            SVC_FLASK([Flask Service])
+            SVC_FASTAPI([FastAPI Service])
+        end
+
+        subgraph "Deployments"
+            FLASK_POD([Flask Pod])
+            FASTAPI_POD([FastAPI Pod])
+            WORKER_POD([Worker Pod])
+        end
+
+        subgraph "Config"
+            CONFIG([ConfigMap])
+            SECRETS([Secrets])
+        end
+
+        subgraph "Storage"
+            PVC_PG([PostgreSQL PVC])
+            PVC_REDIS([Redis PVC])
+        end
+    end
+
+    subgraph "External Services"
+        PG_STATE([PostgreSQL Cloud])
+        SMTP([SMTP])
+    end
+
+    INGRESS --> SVC_FLASK
+    INGRESS --> SVC_FASTAPI
+    SVC_FLASK --> FLASK_POD
+    SVC_FASTAPI --> FASTAPI_POD
+    FLASK_POD --> PVC_PG
+    FASTAPI_POD --> PVC_REDIS
+    FASTAPI_POD --> SMTP
+    FLASK_POD --> PG_STATE
+
+    style Ingress fill:#e3f2fd,stroke:#1976d2
+    style Services fill:#e8f5e9,stroke:#388e3c
+    style Deployments fill:#fff3e0,stroke:#f57c00
+    style Storage fill:#f3e5f5,stroke:#7b1fa2
