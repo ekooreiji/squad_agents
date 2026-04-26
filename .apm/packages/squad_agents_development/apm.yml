@@ -20,6 +20,8 @@ agents:
 skills:
   path: skills/acceptance-criteria-generator/SKILL.md
   path: skills/api-design/SKILL.md
+  path: skills/api/SKILL.md
+  path: skills/apresentacao-ideias/SKILL.md
   path: skills/atomic-design/SKILL.md
   path: skills/bdd-scenarios/SKILL.md
   path: skills/bem/SKILL.md
@@ -46,15 +48,16 @@ skills:
   path: skills/documentation/SKILL.md
   path: skills/fastapi/SKILL.md
   path: skills/flask/SKILL.md
+  path: skills/flutter/SKILL.md
   path: skills/foundation-css/SKILL.md
   path: skills/functional-programming/SKILL.md
   path: skills/gestao-projetos/SKILL.md
   path: skills/hexagonal-architecture/SKILL.md
   path: skills/html-css-fundamentals/SKILL.md
+  path: skills/jest/SKILL.md
   path: skills/js-airbnb-style/SKILL.md
   path: skills/js-google-style/SKILL.md
   path: skills/js-standard-style/SKILL.md
-  path: skills/jest/SKILL.md
   path: skills/logging-monitoring/SKILL.md
   path: skills/material-design/SKILL.md
   path: skills/materialize/SKILL.md
@@ -66,6 +69,7 @@ skills:
   path: skills/nodejs/SKILL.md
   path: skills/pep8-docstring-generator/SKILL.md
   path: skills/pep8-reference/SKILL.md
+  path: skills/performance/SKILL.md
   path: skills/pesquisa-tendencias/SKILL.md
   path: skills/poo-best-practices/SKILL.md
   path: skills/postgresql/SKILL.md
@@ -87,29 +91,9 @@ skills:
   path: skills/typescript/SKILL.md
   path: skills/typography/SKILL.md
   path: skills/ui-design/SKILL.md
+  path: skills/ui-ux-design/SKILL.md
   path: skills/uml-architecture/SKILL.md
   path: skills/user-journey-mapper/SKILL.md
   path: skills/ux-design/SKILL.md
   path: skills/visual-identity/SKILL.md
   path: skills/vue/SKILL.md
-  path: skills/performance/SKILL.md
-  path: skills/api/SKILL.md
-  path: skills/flutter/SKILL.md
-
-name: squad_Developer
-version: 1.0.0
-
-agents:
-  path: .claude/agents/po_agent.md
-skills:
-  path: .claude/skills/acceptance_criteria_generator.md
-  path: .claude/skills/acceptance_bdd_scenarios.md
-  path: .claude/skills/requirements_analizer.md
-  path: .claude/skills/stakeholder-impact-analyzer.md
-  path: .claude/skills/template-library.md
-  path: .claude/skills/user-journey-mapper.md
-  path: .claude/skills/user-story-writer.md
-
-
-plugins:
-  - path: .agents/plugins/logging.md
